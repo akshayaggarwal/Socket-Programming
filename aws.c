@@ -21,8 +21,7 @@ void error(const char *msg)
 
 char *my_itoa(int num, char *str)
 {
-        if(str == NULL)
-        {
+        if(str == NULL){
                 return NULL;
         }
         sprintf(str, "%d", num);
@@ -47,12 +46,13 @@ int udpsockA(int argc, char *argv[],int arr[1024],int index,int si)
    int sitemp = si/3;
    sitemp = sitemp + 2;
    for(i=2;i<sitemp;i++)	
-		{arr2[i] = arr[i];
-		}
-   (arr2[1]) = index;
+		arr2[i] = arr[i];
+		
+   arr2[1] = index;
    arr2[0] = si/3;
-   if (argc != 3) { printf("Usage: server port\n");
-                    exit(1);
+   if (argc != 3){ 
+		printf("Usage: server port\n");
+        exit(1);
    }
 
 // Block of statements for socket connection is taken from Beej's guide for socket programming and Sockets tutorial on linuxhowtos.org
@@ -64,8 +64,7 @@ int udpsockA(int argc, char *argv[],int arr[1024],int index,int si)
    my_addr.sin_port = htons(UDPPORT); 
    my_addr.sin_addr.s_addr = INADDR_ANY; 
    bzero(&(my_addr.sin_zero), 8); 
-   if (bind(sock, (struct sockaddr *)&my_addr,sizeof(struct sockaddr)) == -1) 
-   {
+   if (bind(sock, (struct sockaddr *)&my_addr,sizeof(struct sockaddr)) == -1){
    perror("bind");
    exit(1);
    } 
@@ -75,20 +74,17 @@ int udpsockA(int argc, char *argv[],int arr[1024],int index,int si)
    hp = gethostbyname(argv[1]);
    if (hp==0) error("Unknown host");
 
-   bcopy((char *)hp->h_addr, 
-        (char *)&server.sin_addr,
-         hp->h_length);
+   bcopy((char *)hp->h_addr,(char *)&server.sin_addr,hp->h_length);
    server.sin_port = htons(atoi(argv[2]));
 
-
-   
    length=sizeof(struct sockaddr_in);
    bzero(buffer,256);
-   n=sendto(sock,arr2,
-            4096,0,(const struct sockaddr *)&server,length);
-   if (n < 0) error("Sendto");
+   n=sendto(sock,arr2,4096,0,(const struct sockaddr *)&server,length);
+   if (n < 0) 
+	   error("Sendto");
    n = recvfrom(sock,&result,4,0,(struct sockaddr *)&from, &length);
-   if (n < 0) error("recvfrom");
+   if (n < 0) 
+	   error("recvfrom");
    char snum[6];
    sprintf(snum, "%d", result[0]);
    write(1,"\n",1);
@@ -113,13 +109,13 @@ int udpsockB(int argc, char *argv[],int *arr,int index,int si)
    int sitemp = 2*(si/3);
    sitemp = sitemp + 2;
    for(i=(si/3)+2,j=2;i<sitemp;i++,j++)	
-		{arr2[j] = arr[i];
+		arr2[j] = arr[i];
 
-		}
-   (arr2[1]) = index;
+   arr2[1] = index;
    arr2[0] = si/3;
-   if (argc != 3) { printf("Usage: server port\n");
-                    exit(1);
+   if (argc != 3){ 
+		printf("Usage: server port\n");
+        exit(1);
    }
 
 // Block of statements for socket connection is taken from Beej's guide for socket programming and Sockets tutorial on linuxhowtos.org
@@ -131,28 +127,25 @@ int udpsockB(int argc, char *argv[],int *arr,int index,int si)
    my_addr.sin_port = htons(UDPPORT);
    my_addr.sin_addr.s_addr = INADDR_ANY; 
    bzero(&(my_addr.sin_zero), 8); 
-   if (bind(sock, (struct sockaddr *)&my_addr,sizeof(struct sockaddr)) == -1) 
-   {
+   if (bind(sock, (struct sockaddr *)&my_addr,sizeof(struct sockaddr)) == -1){
    perror("bind");
    exit(1);
    } 
-
 
    server.sin_family = AF_INET;
    hp = gethostbyname(argv[1]);
    if (hp==0) error("Unknown host");
 
-   bcopy((char *)hp->h_addr, 
-        (char *)&server.sin_addr,
-         hp->h_length);
+   bcopy((char *)hp->h_addr,(char *)&server.sin_addr,hp->h_length);
    server.sin_port = htons(atoi(argv[2]));
    length=sizeof(struct sockaddr_in);
    bzero(buffer,256);
-   n=sendto(sock,arr2,
-            4096,0,(const struct sockaddr *)&server,length);
-   if (n < 0) error("Sendto");
+   n=sendto(sock,arr2,4096,0,(const struct sockaddr *)&server,length);
+   if (n < 0) 
+	   error("Sendto");
    n = recvfrom(sock,&result,4,0,(struct sockaddr *)&from, &length);
-   if (n < 0) error("recvfrom");
+   if (n < 0) 
+	   error("recvfrom");
    char snum[6];
    sprintf(snum, "%d", result[0]);
    write(1,"\n",1);
@@ -178,13 +171,13 @@ int udpsockC(int argc, char *argv[],int *arr,int index,int si)
    int sitemp = si;
    sitemp = sitemp + 2;
    for(i=(2*(si/3))+2,j=2;i<sitemp;i++,j++)	
-		{arr2[j] = arr[i];
+		arr2[j] = arr[i];
 
-		}
-   (arr2[1]) = index;
+   arr2[1] = index;
    arr2[0] = si/3;
-   if (argc != 3) { printf("Usage: server port\n");
-                    exit(1);
+   if (argc != 3){ 
+		printf("Usage: server port\n");
+        exit(1);
    }
 
 // Block of statements for socket connection is taken from Beej's guide for socket programming and Sockets tutorial on linuxhowtos.org
@@ -195,10 +188,9 @@ int udpsockC(int argc, char *argv[],int *arr,int index,int si)
    my_addr.sin_port = htons(UDPPORT); 
    my_addr.sin_addr.s_addr = INADDR_ANY; 
    bzero(&(my_addr.sin_zero), 8); 
-   if (bind(sock, (struct sockaddr *)&my_addr,sizeof(struct sockaddr)) == -1) 
-   {
-    perror("bind");
-   exit(1);
+   if (bind(sock, (struct sockaddr *)&my_addr,sizeof(struct sockaddr)) == -1){
+		perror("bind");
+		exit(1);
    }
 
 
@@ -208,17 +200,16 @@ int udpsockC(int argc, char *argv[],int *arr,int index,int si)
    hp = gethostbyname(argv[1]);
    if (hp==0) error("Unknown host");
 
-   bcopy((char *)hp->h_addr, 
-        (char *)&server.sin_addr,
-         hp->h_length);
+   bcopy((char *)hp->h_addr,(char *)&server.sin_addr,hp->h_length);
    server.sin_port = htons(atoi(argv[2]));
    length=sizeof(struct sockaddr_in);
    bzero(buffer,256);
-   n=sendto(sock,arr2,
-            4096,0,(const struct sockaddr *)&server,length);
-   if (n < 0) error("Sendto");
+   n=sendto(sock,arr2,4096,0,(const struct sockaddr *)&server,length);
+   if (n < 0) 
+	   error("Sendto");
    n = recvfrom(sock,&result,4,0,(struct sockaddr *)&from, &length);
-   if (n < 0) error("recvfrom");
+   if (n < 0) 
+	   error("recvfrom");
    char snum[6];
    sprintf(snum, "%d", result[0]);
    write(1,"\n",1);
@@ -238,15 +229,15 @@ int main(int argc, char *argv[])
      char arr[6];
      struct sockaddr_in serv_addr, cli_addr;
      int n;
-     if (argc < 2) {
-         fprintf(stderr,"ERROR, no port provided\n");
-         exit(1);
+     if(argc < 2){
+        fprintf(stderr,"ERROR, no port provided\n");
+        exit(1);
      }
-	signal(SIGCHLD, SIG_IGN);     
+	 signal(SIGCHLD, SIG_IGN);     
 
 // Block of statements for socket connection is taken from Beej's guide for socket programming and Sockets tutorial on linuxhowtos.org
 
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	 sockfd = socket(AF_INET, SOCK_STREAM, 0);
      
      if (sockfd < 0) 
         error("ERROR opening socket");
@@ -259,26 +250,21 @@ int main(int argc, char *argv[])
      serv_addr.sin_addr.s_addr = INADDR_ANY;
      serv_addr.sin_port = htons(portno);
      signal(SIGCHLD, SIG_IGN);
-     if (bind(sockfd, (struct sockaddr *) &serv_addr,
-              sizeof(serv_addr)) < 0) 
-              error("ERROR on binding");
+     if (bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
+		error("ERROR on binding");
      listen(sockfd,5);
      clilen = sizeof(cli_addr);
-     newsockfd = accept(sockfd, 
-                 (struct sockaddr *) &cli_addr, 
-                 &clilen);
+     newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr,&clilen);
      if (newsockfd < 0) 
           error("ERROR on accept");
      bzero(buffer,256);
-     
-     
+    
      n = read(newsockfd,ptr,4096);
      if (n < 0) error("ERROR reading from socket");
      char *str1[3]={"./combserver","localhost","21034"};
      char *str2[3]={"./combserver","localhost","22034"};
      char *str3[3]={"./combserver","localhost","23034"};
      int index = ptr[0];
-	
 	
      int si = ptr[1];
      printf("\nThe AWS has received %d numbers from client using TCP over port 25034\n",si);
@@ -287,33 +273,27 @@ int main(int argc, char *argv[])
      printf("\nThe AWS sent %d numbers to Backend Server 2\n",subsize);
      printf("\nThe AWS sent %d numbers to Backend Server 3\n",subsize);
      
-   
- 
      int j1 = udpsockA(3,str1,ptr,index,si); //udp
      int j2 = udpsockB(3,str2,ptr,index,si);
      int j3 = udpsockC(3,str3,ptr,index,si);
 
      int jfinal;
-	if(index == 1 || index == 2)
-	{	
+ 	 if(index == 1 || index == 2){	
  		jfinal = j1 + j2 + j3;
-		if(index == 1)     		
-		{
-		printf("\nThe AWS received reduction result of SUM from Backend­Server 1 using UDP over port 21034 and it is %d\n",j1);
-		printf("\nThe AWS received reduction result of SUM from Backend­Server 2 using UDP over port 22034 and it is %d\n",j2);
-		printf("\nThe AWS received reduction result of SUM from Backend­Server 3 using UDP over port 23034 and it is %d\n",j3);
-		printf("\nThe AWS has successfully finished the reduction SUM: %d\n",jfinal);		
+		if(index == 1){
+			printf("\nThe AWS received reduction result of SUM from Backend­Server 1 using UDP over port 21034 and it is %d\n",j1);
+			printf("\nThe AWS received reduction result of SUM from Backend­Server 2 using UDP over port 22034 and it is %d\n",j2);
+			printf("\nThe AWS received reduction result of SUM from Backend­Server 3 using UDP over port 23034 and it is %d\n",j3);
+			printf("\nThe AWS has successfully finished the reduction SUM: %d\n",jfinal);		
 		}
-		if(index == 2)     		
-		{
-		printf("\nThe AWS received reduction result of SOS from Backend­Server 1 using UDP over port 21034 and it is %d\n",j1);
-		printf("\nThe AWS received reduction result of SOS from Backend­Server 2 using UDP over port 22034 and it is %d\n",j2);
-		printf("\nThe AWS received reduction result of SOS from Backend­Server 3 using UDP over port 23034 and it is %d\n",j3);
-		printf("\nThe AWS has successfully finished the reduction SOS: %d\n",jfinal);	
+		if(index == 2){
+			printf("\nThe AWS received reduction result of SOS from Backend­Server 1 using UDP over port 21034 and it is %d\n",j1);
+			printf("\nThe AWS received reduction result of SOS from Backend­Server 2 using UDP over port 22034 and it is %d\n",j2);
+			printf("\nThe AWS received reduction result of SOS from Backend­Server 3 using UDP over port 23034 and it is %d\n",j3);
+			printf("\nThe AWS has successfully finished the reduction SOS: %d\n",jfinal);	
 		}
 	}
-	else if(index == 3)
-	{
+	else if(index == 3){
 		if(j1 < j2 && j1 < j3)
 			jfinal = j1;
 		else if(j2 < j1 && j2 < j3)
@@ -327,8 +307,7 @@ int main(int argc, char *argv[])
 		
 
 	}
-	else if(index == 4)
-	{
+	else if(index == 4){
 		if(j1 > j2 && j1 > j3)
 			jfinal = j1;
 		else if(j2 > j1 && j2 > j3)
@@ -347,11 +326,9 @@ int main(int argc, char *argv[])
      n = write(newsockfd,result,19);
      if (n < 0) error("ERROR writing to socket");
      else
-	printf("\nThe AWS has successfully finished sending the reduction value to client\n");  
+	 printf("\nThe AWS has successfully finished sending the reduction value to client\n");  
      close(newsockfd);
      close(sockfd);
 
-    
-   
      return 0; 
 }
