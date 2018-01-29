@@ -17,3 +17,5 @@ serverC:
 
 aws:	
 	./awss 25034
+	
+	
