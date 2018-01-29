@@ -45,8 +45,8 @@ void error(const char *msg)
 
 int main(int fargc, char *func[])
 {
-        char *argv[3]={"./client","localhost","25034"};
-     	int argc = 3;
+    char *argv[3]={"./client","localhost","25034"};
+    int argc = 3;
 	int function, index;	
 	int nn = 10;
 	int a = 0,i;
@@ -70,7 +70,7 @@ int main(int fargc, char *func[])
     struct hostent *server;
 
     char buffer[256];
-    if (argc < 3) {
+    if (argc < 3){
        fprintf(stderr,"usage %s hostname port\n", argv[0]);
        exit(0);
     }
@@ -83,15 +83,13 @@ int main(int fargc, char *func[])
     if (sockfd < 0) 
         error("ERROR opening socket");
     server = gethostbyname(argv[1]);
-    if (server == NULL) {
+    if(server == NULL){
         fprintf(stderr,"ERROR, no such host\n");
         exit(0);
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, 
-         (char *)&serv_addr.sin_addr.s_addr,
-         server->h_length);
+    bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
     serv_addr.sin_port = htons(portno);
     if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
         error("ERROR connecting");
@@ -100,41 +98,32 @@ int main(int fargc, char *func[])
 
     i =2;
 											
-	while(fgets(str,nn,file))							//reading nums.csv file
-	{
+	while(fgets(str,nn,file)){							//reading nums.csv file
 	
-	a = a + 1;
-	
-	int k;	
-	sscanf(str, "%d", &k);
-	num[i] = k;	
-	si = si + 1;	
-	i = i + 1;
-	if (n < 0) 
-        	error("ERROR writing to socket");
+		a = a + 1;	
+		int k;	
+		sscanf(str, "%d", &k);
+		num[i] = k;	
+		si = si + 1;	
+		i = i + 1;
+		if (n < 0) 
+				error("ERROR writing to socket");
 	}
 	fclose(file);
-
-        num[0] = index;
-        num[1] = si;
-	
-
+    num[0] = index;
+    num[1] = si;
 
     n = write(sockfd,num,4096);								//sending integer array to aws server
-     if(index == 1)
-	{
+    if(index == 1){
 		printf("\nClient has sent the reduction type SUM to AWS\n");
-	} 
-     else if(index == 2)
-	{
+	}  
+    else if(index == 2){
 		printf("\nClient has sent the reduction type SOS to AWS\n");
 	}
-     else if(index == 3)
-	{
+    else if(index == 3){
 		printf("\nClient has sent the reduction type MIN to AWS\n");
 	}
-     else if(index == 4)
-	{
+    else if(index == 4){
 		printf("\nClient has sent the reduction type MAX to AWS\n");
 	}
     printf("Client has sent %d numbers to AWS",num[1]);
@@ -142,23 +131,19 @@ int main(int fargc, char *func[])
     n = read(sockfd,buffer,255);							//reading the final result from aws server 
     if (n < 0) 
          error("ERROR reading from socket");
-     if(index == 1)
-	{
+    if(index == 1){
 		printf("\nClient has received reduction SUM: ");
 		printf("%s\n",buffer);
 	} 
-     else if(index == 2)
-	{
+    else if(index == 2){
 		printf("\nClient has sent the reduction SOS: ");
 		printf("%s\n",buffer);
 	}
-     else if(index == 3)
-	{
+    else if(index == 3){
 		printf("\nClient has sent the reduction MIN: ");
 		printf("%s\n",buffer);
 	}
-     else if(index == 4)
-	{
+    else if(index == 4){
 		printf("\nClient has sent the reduction MAX: ");
 		printf("%s\n",buffer);
 	}
